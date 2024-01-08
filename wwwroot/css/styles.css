@@ -1,0 +1,38 @@
+﻿.flex-container {
+    display: flex !important;
+    border: 1px solid orange;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-items: center;
+    background-color: DodgerBlue;
+}
+
+    .flex-container > div {
+        background-color: #f1f1f1;
+        min-width: 100px;
+        min-height: 75px;
+        margin: 10px;
+        text-align: center;
+        line-height: 75px;
+        font-size: 30px;
+        display: flex;
+    }
+
+
+        .flex-container > div > input[type="button"] {
+            flex-grow: 1 !important;
+            -webkit-user-drag: none;
+            box-sizing: border-box;
+            cursor: pointer;
+            display: inline-block;
+            line-height: normal;
+            user-select: none;
+            vertical-align: middle;
+            white-space: nowrap;
+            background-color: #e6e6e6;
+            border: transparent;
+            border-radius: 2px;
+            color: rgba(0,0,0,.8);
+            padding: .5em 1em;
+            text-decoration: none;
+        }

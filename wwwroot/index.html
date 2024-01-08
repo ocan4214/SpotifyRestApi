@@ -1,0 +1,461 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="./css//styles.css" type="text/css">
+    <script src="./js/dayjs.min.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <div class="flex-container">
+        <div class="RefreshToken">
+            <input id="UserTopTracksButton" type="button" value="Refresh Token" onclick="refreshToken()" />
+        </div>
+
+        <div class="UserProfile">
+            <input id="UserProfileButton" type="button" value="Show Profile Information" onclick="GetUserProfile()" />
+        </div>
+        <div class="UserTopItems">
+            <input id="UserTopArtistsButton" type="button" value="Show User Top Artists" onclick="GetUserTopItems(0)" />
+        </div>
+
+
+        <div class="UserTopItems">
+            <input id="UserTopTracksButton" type="button" value="Show User Top Tracks" onclick="GetUserTopItems(1)" />
+        </div>
+        <div class="PlaySong">
+            <input id="PlaySongButton" type="button" value="Play" onclick="PlaySong()" />
+        </div>
+        <div class="SearchAndPlay">
+            <input id="PlaySongButton" type="button" value="Search and Play" onclick="SearchAndPlaySong()" />
+        </div>
+        <div class="PauseSong">
+            <input id="PauseSongButton" type="button" value="Pause" onclick="PauseSong()" />
+        </div>
+        <div class="SkipNext">
+            <input id="SkipNextButton" type="button" value="Skip to Next" onclick="SkipToNextSong()" />
+        </div>
+        <div class="SkipPrevious">
+            <input id="SkipPreviousButton" type="button" value="Skip to Previous" onclick="SkipToPreviousSong()" />
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+
+    const ACCESS_TOKEN = "access_token"
+    const REFRESH_TOKEN = "refres_token"
+    const TOKEN_MODEL = "token_model";
+    const TOKEN_EXPIRATION_DATE = "token_expiration_date";
+    const CODE = "code";
+
+
+    async function SearchAndPlaySong() {
+        try {
+            let song ="Boston Manor Halo"
+            let url = encodeURI("https://localhost:3034/api/SpotifyApi/SearchAndPlaySong/"+song);
+            let promise = await fetch(url,
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+
+            if (promise.status == "200") {
+                return await promise.text();
+            }
+            else {
+                throw new Error("STATUS ERROR");
+            }
+        }
+        catch (error) {
+            console.log("ERROR OCCURED : " + error);
+        }
+
+    }
+
+    async function PlaySong() {
+        try {
+
+            let promise = await fetch("https://localhost:3034/api/SpotifyApi/PlaySong",
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+            if (promise.status == "200") {
+                return await promise.text();
+            }
+            else {
+                throw new Error("STATUS ERROR");
+            }
+        }
+        catch (error) {
+            console.log("ERROR OCCURED : " + error);
+        }
+
+    }
+
+    async function PauseSong() {
+        try {
+
+            let promise = await fetch("https://localhost:3034/api/SpotifyApi/PauseSong",
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+            if (promise.status == "200") {
+                return await promise.text();
+            }
+            else {
+                throw new Error("STATUS ERROR");
+            }
+        }
+        catch (error) {
+            console.log("ERROR OCCURED : " + error);
+        }
+    }
+
+
+    async function SkipToNextSong() {
+        try {
+            let promise = await fetch("https://localhost:3034/api/SpotifyApi/SkipToNextSong",
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+            if (promise.status == "200") {
+                return await promise.text();
+            }
+            else {
+                throw new Error("STATUS ERROR");
+            }
+        }
+        catch (error) {
+            console.log("ERROR OCCURED : " + error);
+        }
+    }
+
+
+    async function SkipToPreviousSong() {
+        try {
+            let promise = await fetch("https://localhost:3034/api/SpotifyApi/SkipToPreviousSong",
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+            if (promise.status == "200") {
+                return await promise.text();
+            }
+            else {
+                throw new Error("STATUS ERROR");
+            }
+        }
+        catch (error) {
+            console.log("ERROR OCCURED : " + error);
+        }
+    }
+
+
+    async function getAuthentication() {
+
+        try {
+
+            let promise = await fetch("https://localhost:3034/api/SpotifyApi/Login",
+                {
+                    method: "POST",
+                    body: "",
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    }
+                });
+
+            if (promise.status == "200") {
+                return await promise.text();
+            }
+            else {
+                throw new Error("STATUS ERROR");
+            }
+        }
+        catch (error) {
+            console.log("ERROR OCCURED : " + error);
+        }
+
+    }
+    async function fetchAccessToken(code) {
+        try {
+
+            let promise = await fetch("https://localhost:3034/api/SpotifyApi/FetchToken",
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        token: code,
+                        refreshToken: localStorage.getItem(REFRESH_TOKEN)
+                    }),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+            if (promise.status == "200") {
+                let tokenModel = await promise.text();
+                localStorage.setItem(TOKEN_MODEL, tokenModel);
+                return tokenModel;
+            }
+            else {
+                //Special status
+            }
+        }
+        catch (error) {
+            console.log("ERROR OCCURED : " + error);
+        }
+    }
+
+    async function refreshToken() {
+        let refreshToken = localStorage.getItem(REFRESH_TOKEN);
+        if (refreshToken) {
+            let promise = await fetch("https://localhost:3034/api/SpotifyApi/RefreshToken",
+                {
+                    method: "POST",
+                    body: JSON.stringify(refreshToken),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+            if (promise.status == "200") {
+                let tokenModel = await promise.text();
+                localStorage.setItem(TOKEN_MODEL, tokenModel);
+                return tokenModel;
+            }
+        }
+        else {
+            alert("No Token to refresh");
+        }
+
+    }
+
+
+    function isExpiredToken() {
+        let tokenExpirationDate = dayjs(localStorage.getItem(TOKEN_EXPIRATION_DATE));
+        if (tokenExpirationDate) {
+            let today = dayjs();
+            tokenExpirationDate = dayjs(tokenExpirationDate).add(1, "h");
+            if (today.isBefore(tokenExpirationDate)) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
+
+    function checkToken() {
+        try {
+            if (!localStorage.getItem(ACCESS_TOKEN)) {
+                let code = getCode();
+                fetchAccessToken(code).then(responseText => {
+                    if (responseText) {
+                        var data = JSON.parse(responseText);
+                        console.log(data);
+                        if (data.access_token != undefined) {
+                            access_token = data.access_token;
+                            localStorage.setItem(ACCESS_TOKEN, access_token);
+                            localStorage.setItem(TOKEN_EXPIRATION_DATE, dayjs().toDate());
+                        }
+                        if (data.refresh_token != undefined) {
+                            refresh_token = data.refresh_token;
+                            localStorage.setItem(REFRESH_TOKEN, refresh_token);
+                        }
+
+                    }
+                    window.history.pushState("", "", "https://localhost:3034"); // remove param from url
+                });
+            }
+            else if (localStorage.getItem(ACCESS_TOKEN) && localStorage.getItem(REFRESH_TOKEN) && isExpiredToken()) {
+                refreshToken().then(responseText => {
+                    if (responseText) {
+                        var data = JSON.parse(responseText);
+                        console.log(data);
+                        if (data.access_token != undefined) {
+                            access_token = data.access_token;
+                            localStorage.setItem(ACCESS_TOKEN, access_token);
+                            localStorage.setItem(TOKEN_EXPIRATION_DATE, dayjs());
+                        }
+                        if (data.refresh_token != undefined) {
+                            refresh_token = data.refresh_token;
+                            localStorage.setItem(REFRESH_TOKEN, refresh_token);
+                        }
+                    }
+                });
+            }
+            else if (localStorage.getItem(ACCESS_TOKEN) && !isExpiredToken()) {
+                return;
+            }
+            else {
+                throw new Error("Something Really went Wrong ")
+            }
+        }
+        catch (error) {
+            const stackTrace = error.stack;
+
+            // Extract the line number from the stack trace
+            const lineNumberMatch = stackTrace.match(/(\d+):(\d+)/);
+            const lineNumber = lineNumberMatch ? lineNumberMatch[1] : null;
+
+            // Log or handle the error
+            console.error(`Error at line ${lineNumber}: ${error.message}`);
+        }
+
+    }
+
+    function getCode() {
+        if (!localStorage.getItem(CODE)) {
+            let code = null;
+            const queryString = window.location.search;
+            if (queryString.length > 0) {
+                const urlParams = new URLSearchParams(queryString);
+                code = urlParams.get(CODE)
+                localStorage.setItem(CODE, code);
+            }
+            return code;
+        }
+        else {
+            return localStorage.getItem(CODE);
+        }
+
+    }
+
+
+    async function GetUserProfile() {
+        let promise = await fetch("https://localhost:3034/api/SpotifyApi/GetUserProfile",
+            {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+        if (promise.status == "200") {
+            let userProfile = await promise.json();
+            localStorage.setItem("userID", userProfile.id);
+            let playlist = await GetUserPlayList();
+            return userProfile;
+        }
+        else {
+            return "Error Profile";
+        }
+    }
+
+    async function GetUserTopItems(type) {
+        let promise = await fetch("https://localhost:3034/api/SpotifyApi/GetUserTopItems",
+            {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    typeEnum: type,
+                    limit: 2,
+                    offset: 0,
+                    rangeEnum: 1
+                })
+            });
+
+        if (promise.status == "200") {
+            let tokenModel = await promise.text();
+            localStorage.setItem(TOKEN_MODEL, tokenModel);
+            return tokenModel;
+        }
+        else {
+            return "ABC";
+        }
+    }
+
+    async function GetUserPlayList() {
+        let userID = localStorage.getItem("userID")
+        let promise = await fetch("https://localhost:3034/api/SpotifyApi/GetUserPlayList",
+            {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userID),
+
+            });
+
+        if (promise.status == "200") {
+            let playList = await promise.json();
+            return playList;
+        }
+        else {
+            return "ABC";
+        }
+
+    }
+
+
+
+    async function onLoad() {
+        if (window.location.search.length > 0 || localStorage.getItem(CODE)) {
+            checkToken();
+        }
+        if (!localStorage.getItem(CODE)) {
+            let url = await getAuthentication();
+            window.location.href = url;
+        }
+
+        if (localStorage.getItem(CODE) && localStorage.getItem(ACCESS_TOKEN))
+            return "OK";
+
+        return "Failed";
+    }
+
+
+
+    window.onload = () => {
+        onLoad().then((resp) => {
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

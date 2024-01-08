@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotifyRestApi", "SpotifyRestApi.csproj", "{A772E8A0-F078-49AF-A49A-0983CF3391B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A772E8A0-F078-49AF-A49A-0983CF3391B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A772E8A0-F078-49AF-A49A-0983CF3391B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A772E8A0-F078-49AF-A49A-0983CF3391B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A772E8A0-F078-49AF-A49A-0983CF3391B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C739CD02-0815-4CA4-B198-504016D7A996}
+	EndGlobalSection
+EndGlobal
